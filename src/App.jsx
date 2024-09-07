@@ -8,9 +8,9 @@ import axios from "axios";
 
 const cookies = new Cookies();
 function App() {
-  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState(null);
   useEffect(() => {
-    const getUser = async () => {
+    const getEmail = async () => {
       const token = cookies.get("token");
       try {
         const { data } = await axios.get(
@@ -19,20 +19,20 @@ function App() {
             headers: { Authorization: token },
           }
         );
-        setUser(data);
+        setEmail(data);
       } catch (err) {
         console.error(err);
       }
     };
-    getUser();
+    getEmail();
   }, []);
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <>
-          <NavigationDrawer />
-          {user ? <h2>Welcome {user}</h2> : <h2>Please Login to continue</h2>}
+          <NavigationDrawer email={email} setEmail={setEmail} />
+          {email ? <h2>Welcome {email}</h2> : <h2>Please Login to continue</h2>}
         </>
       ),
     },
@@ -40,8 +40,8 @@ function App() {
       path: "/login",
       element: (
         <>
-          <NavigationDrawer />
-          <Login />
+          <NavigationDrawer email={email} setEmail={setEmail} />
+          <Login email={email} setEmail={setEmail} />
         </>
       ),
     },

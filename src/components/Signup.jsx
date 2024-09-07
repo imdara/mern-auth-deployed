@@ -1,11 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
-  const signupHandler = (e) => {
+  const navigate = useNavigate();
+  const signupHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
+    try {
+      const { data } = await axios.post(
+        "https://mern-auth-backend-4l8k.onrender.com/api/auth/signup",
+        user
+      );
+      alert(data.message);
+      navigate("/login");
+    } catch (error) {
+      alert(error.response.data);
+    }
   };
   return (
     <div className="signup">
